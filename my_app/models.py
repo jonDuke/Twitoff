@@ -7,6 +7,25 @@ db = SQLAlchemy()
 
 migrate = Migrate()
 
+
+class Tweet(db.Model):
+    __tablename__ = 'tweets'
+    id = db.Column(db.Integer, primary_key=True)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    text = db.Column(db.String())       # tweet text
+    comments = db.Column(db.Integer)    # number of comments
+    likes = db.Column(db.Integer)       # number of likes
+    retweets = db.Column(db.Integer)    # number of retweets
+    timestamp = db.Column(db.DateTime)  # time the tweet was posted
+
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128))    # display name
+    handle = db.Column(db.String(128))  # @handle
+    followers = db.Column(db.Integer)   # number of followers
+    tweets = db.relationship('Tweet', backref='users')
+
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128))
