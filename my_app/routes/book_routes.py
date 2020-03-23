@@ -27,7 +27,8 @@ def new_book():
 @book_routes.route("/books/create", methods=["GET", "POST"])
 def create_book():
     # add the new book to our dictionary
-    new_book = Book(title=request.form["title"], author_id=request.form["author_name"])
+    new_book = Book(title=request.form["book_title"], 
+                    author_id=request.form["author_name"])
     db.session.add(new_book)
     db.session.commit()
     return redirect(f"/books")
