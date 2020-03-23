@@ -1,6 +1,6 @@
 # my_app/__init__.py
 
-from flask import Flask
+from flask import Flask, jsonify, render_template
 
 #from web_app.routes.home_routes import home_routes
 #from web_app.routes.book_routes import book_routes
@@ -18,6 +18,24 @@ def create_app():
     def about():
         print("VISITED THE ABOUT PAGE")
         return "About Me!"
+
+    @app.route("/books")
+    def list_books():
+        books = [
+            {'id': 1, 'title': 'Book 1'},
+            {'id': 2, 'title': 'Book 2'},
+            {'id': 3, 'title': 'Book 3'}
+        ]
+        return render_template("books.html")
+
+    @app.route("/books.json")
+    def list_books_json():
+        books = [
+            {'id': 1, 'title': 'Book 1'},
+            {'id': 2, 'title': 'Book 2'},
+            {'id': 3, 'title': 'Book 3'}
+        ]
+        return jsonify(books)
 
     return app
 
