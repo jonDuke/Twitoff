@@ -1,38 +1,33 @@
 # web_app/routes/book_routes.py
 
-from flask import Blueprint, jsonify, request, render_template
+from my_app.models import db, Book, parse_records
+
+from flask import Blueprint, jsonify, request, render_template, redirect
 
 book_routes = Blueprint("book_routes", __name__)
 
 @book_routes.route("/books.json")
 def list_books():
-    books = [
-        {"id": 1, "title": "Book 1"},
-        {"id": 2, "title": "Book 2"},
-        {"id": 3, "title": "Book 3"},
-    ]
-    return jsonify(books)
+    # return the books data in json format
+    book_records = Book.query.all()
+    return jsonify(book_records)
 
 @book_routes.route("/books")
 def list_books_for_humans():
-    books = [
-        {"id": 1, "title": "Book 1"},
-        {"id": 2, "title": "Book 2"},
-        {"id": 3, "title": "Book 3"},
-    ]
-    return render_template("books.html", message="Here are our books", books=books)
+    # list books
+    book_records = Book.query.all()
+    return render_template("books.html", message="Here are our books", 
+                            books=book_records)
 
 @book_routes.route("/books/new")
 def new_book():
+    # display the new book form
     return render_template("new_book.html")
 
-@book_routes.route("/books/create", methods=["POST"])
+@book_routes.route("/books/create", methods=["GET", "POST"])
 def create_book():
-    print("FORM DATA:", dict(request.form))
-    # todo: store in database
-    return jsonify({
-        "message": "BOOK CREATED OK (TODO)",
-        "book": dict(request.form)
-    })
-    #flash(f"Book '{new_book.title}' created successfully!", "success")
-    #return redirect(f"/books")
+    # add the new book to our dictionary
+    new_book = Book(title=request.form["title"], author_id=request.form["author_name"])
+    db.session.add(new_book)
+    db.session.commit()
+    return redirect(f"/books")

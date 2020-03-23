@@ -1,2 +1,6 @@
-# VScode stuff
+# VScode settings
 .vscode/
+
+# ignore database files
+*.db
+*.sqlite3
