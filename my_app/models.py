@@ -11,19 +11,22 @@ migrate = Migrate()
 class Tweet(db.Model):
     __tablename__ = 'tweets'
     id = db.Column(db.Integer, primary_key=True)
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    text = db.Column(db.String())       # tweet text
-    comments = db.Column(db.Integer)    # number of comments
-    likes = db.Column(db.Integer)       # number of likes
-    retweets = db.Column(db.Integer)    # number of retweets
-    timestamp = db.Column(db.DateTime)  # time the tweet was posted
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    full_text = db.Column(db.String(500))
+    embedding = db.Column(db.PickleType)
+    # comments = db.Column(db.Integer)
+    # likes = db.Column(db.Integer)
+    # retweets = db.Column(db.Integer)
+    # timestamp = db.Column(db.DateTime)
 
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128))    # display name
-    handle = db.Column(db.String(128))  # @handle
-    followers = db.Column(db.Integer)   # number of followers
+    screen_name = db.Column(db.String(128))
+    name = db.Column(db.String(128))
+    location = db.Column(db.String)
+    followers_count = db.Column(db.Integer)
+    latest_tweet_id = db.Column(db.BigInteger)
     tweets = db.relationship('Tweet', backref='users')
 
 class Book(db.Model):

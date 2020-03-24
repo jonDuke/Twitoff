@@ -2,7 +2,7 @@
 
 from my_app.models import db, Book, parse_records
 
-from flask import Blueprint, jsonify, request, render_template, redirect
+from flask import Blueprint, jsonify, request, render_template, redirect#, flash
 
 book_routes = Blueprint("book_routes", __name__)
 
@@ -31,4 +31,5 @@ def create_book():
                     author_id=request.form["author_name"])
     db.session.add(new_book)
     db.session.commit()
+    #flash(f"Book '{new_book.title}' created successfully!", "success")
     return redirect(f"/books")
