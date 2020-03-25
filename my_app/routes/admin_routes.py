@@ -2,10 +2,15 @@
 
 from flask import Blueprint, jsonify, request, render_template, flash, redirect
 
-from my_app.models import db
+from my_app.models import db, User
 from my_app.routes.twitter_routes import store_twitter_data
 
 admin_routes = Blueprint("admin_routes", __name__)
+
+@admin_routes.route("/admin")
+def admin_panel():
+    users = User.query.all()
+    return render_template("admin_panel.html", users=users)
 
 @admin_routes.route("/admin/db/reset")
 def reset_db():

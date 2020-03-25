@@ -1,0 +1,18 @@
+{% extends "bootstrap_layout.html" %}
+{% set active_page = "add_twitter_user" %}
+
+{% block content %}
+
+    <h2>Add a user</h2>
+
+    <p>Fill this form and submit to add another Twitter user to the database</p>
+
+    <form action="/addUser" method="POST">
+
+        <label>Screen Name (@user):</label>
+        <input type="text" name="screen_name">
+
+        <button>Submit</button>
+    </form>
+
+{% endblock %}

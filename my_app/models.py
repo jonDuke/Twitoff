@@ -26,7 +26,7 @@ class User(db.Model):
     name = db.Column(db.String(128))
     location = db.Column(db.String)
     followers_count = db.Column(db.Integer)
-    latest_tweet_id = db.Column(db.BigInteger)
+    tweet_count = db.Column(db.Integer)
     tweets = db.relationship('Tweet', backref='users')
 
 class Book(db.Model):

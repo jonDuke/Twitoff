@@ -1,6 +1,7 @@
 # web_app/routes/twitter_routes.py
 
-from flask import Blueprint, render_template, jsonify
+from flask import Blueprint, render_template, jsonify, request, flash, redirect
+from tweepy import TweepError
 
 from my_app.models import db, Tweet, User, parse_records
 from my_app.services.twitter_service import twitter_api_client
@@ -12,7 +13,13 @@ def store_twitter_data(screen_name):
     """ stores twitter data for the given user in the database """
     # get twitter info
     api = twitter_api_client()
-    twitter_user = api.get_user(screen_name)
+    
+    try:
+        twitter_user = api.get_user(screen_name)
+    except:
+        # raises an error if user is not found
+        return False, False
+
     statuses = api.user_timeline(screen_name, tweet_mode="extended", count=150, 
                                  exclude_replies=False, include_rts=False)
 
@@ -22,6 +29,7 @@ def store_twitter_data(screen_name):
     db_user.name = twitter_user.name
     db_user.location = twitter_user.location
     db_user.followers_count = twitter_user.followers_count
+    db_user.tweet_count = len(statuses)
     db.session.add(db_user)
     db.session.commit()
 
@@ -53,6 +61,26 @@ def store_twitter_data(screen_name):
 
     return db_user, statuses
 
+@twitter_routes.route("/newUser")
+def add_user_form():
+    return render_template("add_twitter_user.html")
+
+@twitter_routes.route("/addUser", methods=["GET", "POST"])
+def add_user():
+    # get form response
+    screen_name = request.form["screen_name"]
+
+    # call twitter api and store data
+    new_user, _ = store_twitter_data(screen_name)
+
+    # check if user was found
+    if new_user:
+        flash(f"User '{new_user.screen_name}' added successfully!", "success")
+    else:
+        flash(f"User '{screen_name}' not found.", "error")
+
+    return redirect(f"/newUser")
+
 @twitter_routes.route("/users")
 @twitter_routes.route("/users.json")
 def list_users():
@@ -62,7 +90,5 @@ def list_users():
 
 @twitter_routes.route("/users/<screen_name>")
 def get_user(screen_name=None):
-    #print(screen_name)
     db_user, statuses = store_twitter_data(screen_name)
-    #return "OK"
     return render_template("user.html", user=db_user, tweets=statuses) # tweets=db_tweets

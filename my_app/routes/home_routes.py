@@ -2,7 +2,7 @@
 
 from flask import Blueprint, render_template
 
-from my_app.models import db, User
+from my_app.models import User
 
 home_routes = Blueprint("home_routes", __name__)
 
