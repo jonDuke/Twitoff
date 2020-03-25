@@ -4,30 +4,68 @@
 {% set active_page = "twitoff selection" %}
 
 {% block content %}
-    <h2>Prediction Time</h2>
+    <h2>Make a prediction</h2>
 
-    <p>Use the form below to predict which user is more likely to say a given tweet...</p>
+    <p>Use the form below to predict which user is more likely to say a given tweet.</p>
 
     <form action="/predict" method="POST">
 
-        <label>Twitter User A:</label>
-        <select name="screen_name_a">
-            <option value="elonmusk" selected="true">@elonmusk</option>
-            <option value="justinbieber">@justinbieber</option>
-            <option value="s2t2">@s2t2</option>
-        </select>
-        <br>
+        {% if userlist %}
+            <!-- Populate drop-down menus with all users in the database -->
+            <ul>
+            <label>Twitter User A:</label>
+            <select name="screen_name_a">
+                {% for user in userlist %}
+                    {% if user.screen_name == 'elonmusk' %}
+                    <option value={{ user.screen_name }} selected="true">{{ user.name }}, @{{ user.screen_name }}</option>
+                    {% else %}
+                    <option value={{ user.screen_name }}>{{ user.name }}, @{{ user.screen_name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <br>
 
-        <label>Twitter User B:</label>
-        <select name="screen_name_b">
-            <option value="elonmusk">@elonmusk</option>
-            <option value="justinbieber" selected="true">@justinbieber</option>
-            <option value="s2t2">@s2t2</option>
-          </select>
-        <br>
+            <label>Twitter User B:</label>
+            <select name="screen_name_b">
+                {% for user in userlist %}
+                    {% if user.screen_name == 'justinbieber' %}
+                    <option value={{ user.screen_name }} selected="true">{{ user.name }}, @{{ user.screen_name }}</option>
+                    {% else %}
+                    <option value={{ user.screen_name }}>{{ user.name }}, @{{ user.screen_name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <br>
+            </ul>
 
+        {% else %}
+            <!-- Default options if no users were passed to this page -->
+            <label>Twitter User A:</label>
+            <select name="screen_name_a">
+                <option value="elonmusk" selected="true">@elonmusk</option>
+                <option value="justinbieber">@justinbieber</option>
+                <option value="s2t2">@s2t2</option>
+                <option value="NBCNews">@NBCNews</option>
+                <option value="Austen">@Austen</option>
+            </select>
+            <br>
+
+            <label>Twitter User B:</label>
+            <select name="screen_name_b">
+                <option value="elonmusk">@elonmusk</option>
+                <option value="justinbieber" selected="true">@justinbieber</option>
+                <option value="s2t2">@s2t2</option>
+                <option value="NBCNews">@NBCNews</option>
+                <option value="Austen">@Austen</option>
+            </select>
+            <br>
+        {% endif %}
+        
         <label>Tweet Text:</label>
-        <input type="text" name="tweet_text" placeholder="Tesla Model S production facility is great" value="Tesla Model S production facility is great">
+        <input type="text" name="tweet_text" 
+            placeholder="Tesla Model S production facility is great" 
+            value="Tesla Model S production facility is great"
+            size=80>
         <br>
 
         <button>Submit</button>

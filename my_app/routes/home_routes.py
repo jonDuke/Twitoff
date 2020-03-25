@@ -2,12 +2,15 @@
 
 from flask import Blueprint, render_template
 
+from my_app.models import db, User
+
 home_routes = Blueprint("home_routes", __name__)
 
 @home_routes.route("/")
 def index():
-    print("VISITED THE HOME PAGE")
-    return render_template("twitoff_selection.html")
+    # get list of users for the drop-down menus
+    userlist = User.query.all()
+    return render_template("twitoff_selection.html", userlist=userlist)
 
 @home_routes.route("/hello")
 def hello():
