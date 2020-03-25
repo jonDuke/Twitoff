@@ -14,7 +14,7 @@ def store_twitter_data(screen_name):
     api = twitter_api_client()
     twitter_user = api.get_user(screen_name)
     statuses = api.user_timeline(screen_name, tweet_mode="extended", count=150, 
-                                 exclude_replies=True, include_rts=False)
+                                 exclude_replies=False, include_rts=False)
 
     # save or update user object
     db_user = User.query.get(twitter_user.id) or User(id=twitter_user.id)
@@ -29,7 +29,8 @@ def store_twitter_data(screen_name):
     #print("STATUS COUNT:", len(statuses))
     basilica_api = basilica_api_client()
     all_tweet_texts = [status.full_text for status in statuses]
-    embeddings = list(basilica_api.embed_sentences(all_tweet_texts, model="twitter"))
+    embeddings = list(basilica_api.embed_sentences(all_tweet_texts, 
+                                                   model="twitter"))
     #print("NUMBER OF EMBEDDINGS", len(embeddings))
 
     # save or update tweet objects
@@ -47,7 +48,8 @@ def store_twitter_data(screen_name):
         db.session.add(db_tweet)
         counter+=1
 
-    db.session.commit()
+    db.session.commit()    
+    print(f"Added user {db_user.name} with {len(statuses)} tweets")
 
     return db_user, statuses
 

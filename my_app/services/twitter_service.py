@@ -15,10 +15,10 @@ access_token_secret = os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
 def twitter_api_client():
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
-    print("AUTH", type(auth))
+    #print("AUTH", type(auth))
 
     api = tweepy.API(auth)
-    print("API", type(api)) #> <class 'tweepy.api.API'>
+    #print("API", type(api)) #> <class 'tweepy.api.API'>
     return api
 
 if __name__ == "__main__":
@@ -39,7 +39,8 @@ if __name__ == "__main__":
     print("STATUSES...")
     # get that user's tweets:
     # see: http://docs.tweepy.org/en/latest/api.html#API.user_timeline
-    statuses = api.user_timeline(screen_name, tweet_mode="extended", count=150, exclude_replies=True, include_rts=False)
+    statuses = api.user_timeline(screen_name, tweet_mode="extended", count=150, 
+                                 exclude_replies=False, include_rts=False)
 
     for status in statuses:
         print(type(status)) #> <class 'tweepy.models.Status'>

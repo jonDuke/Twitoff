@@ -2,7 +2,8 @@
 
 from flask import Blueprint, request, jsonify, render_template
 
-from sklearn.linear_model import LogisticRegression # for example
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
 
 from my_app.models import User, Tweet
 from my_app.services.basilica_service import basilica_api_client
@@ -38,7 +39,8 @@ def predict():
         labels.append(user_b.screen_name)
         embeddings.append(tweet.embedding)
 
-    classifier = LogisticRegression() # for example
+    #classifier = LogisticRegression()
+    classifier = DecisionTreeClassifier()
     classifier.fit(embeddings, labels)
 
     print("-----------------")
