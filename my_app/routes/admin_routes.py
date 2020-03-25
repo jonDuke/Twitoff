@@ -1,4 +1,4 @@
-# web_app/routes/admin_routes.py
+# my_app/routes/admin_routes.py
 
 from flask import Blueprint, jsonify, request, render_template, flash, redirect
 

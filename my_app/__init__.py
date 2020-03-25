@@ -7,6 +7,7 @@ from my_app.routes.home_routes import home_routes
 from my_app.routes.book_routes import book_routes
 from my_app.routes.twitter_routes import twitter_routes
 from my_app.routes.admin_routes import admin_routes
+from my_app.routes.iris_routes import iris_routes
 
 def create_app():
     app = Flask(__name__)
@@ -23,6 +24,7 @@ def create_app():
     app.register_blueprint(book_routes)
     app.register_blueprint(twitter_routes)
     app.register_blueprint(admin_routes)
+    app.register_blueprint(iris_routes)
 
     return app
 
