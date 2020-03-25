@@ -2,16 +2,14 @@
 
 from flask import Blueprint, render_template, jsonify
 
-from my_app.models import db, Tweet, User
+from my_app.models import db, Tweet, User, parse_records
 from my_app.services.twitter_service import twitter_api_client
 from my_app.services.basilica_service import basilica_api_client
 
 twitter_routes = Blueprint("twitter_routes", __name__)
 
-@twitter_routes.route("/users/<screen_name>")
-def get_user(screen_name=None):
-    #print(screen_name)
-
+def store_twitter_data(screen_name):
+    """ stores twitter data for the given user in the database """
     # get twitter info
     api = twitter_api_client()
     twitter_user = api.get_user(screen_name)
@@ -49,8 +47,20 @@ def get_user(screen_name=None):
         db.session.add(db_tweet)
         counter+=1
 
-        breakpoint()
     db.session.commit()
 
-    return "OK"
-    #return jsonify({"user": user._json, "tweets": [s._json for s in statuses]})
+    return db_user, statuses
+
+@twitter_routes.route("/users")
+@twitter_routes.route("/users.json")
+def list_users():
+    db_users = User.query.all()
+    users_response = parse_records(db_users)
+    return jsonify(users_response)
+
+@twitter_routes.route("/users/<screen_name>")
+def get_user(screen_name=None):
+    #print(screen_name)
+    db_user, statuses = store_twitter_data(screen_name)
+    #return "OK"
+    return render_template("user.html", user=db_user, tweets=statuses) # tweets=db_tweets
