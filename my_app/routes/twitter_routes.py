@@ -33,30 +33,39 @@ def store_twitter_data(screen_name):
     db.session.add(db_user)
     db.session.commit()
 
-    # convert tweet text into embeddings with Basilica
+    # add or update tweets (statuses) in the database
     #print("STATUS COUNT:", len(statuses))
     basilica_api = basilica_api_client()
-    all_tweet_texts = [status.full_text for status in statuses]
-    embeddings = list(basilica_api.embed_sentences(all_tweet_texts, 
-                                                   model="twitter"))
-    #print("NUMBER OF EMBEDDINGS", len(embeddings))
+    need_embeds = []
 
-    # save or update tweet objects
-    counter = 0
     for status in statuses:
         #print(status.full_text)
         #print("----")
         #print(dir(status))
 
-        # Find or create database tweet:
-        db_tweet = Tweet.query.get(status.id) or Tweet(id=status.id)
-        db_tweet.user_id = status.author.id # or db_user.id
-        db_tweet.full_text = status.full_text
-        db_tweet.embedding = embeddings[counter]
-        db.session.add(db_tweet)
-        counter+=1
+        # Find if tweet already exists
+        db_tweet = Tweet.query.get(status.id)
+        if db_tweet:
+            # tweet exists, just update twitter info
+            db_tweet.user_id = status.author.id
+            db_tweet.full_text = status.full_text
+        else:
+            # new tweet, get all data (saves time if we already had an embedding)
+            db_tweet = Tweet(id=status.id)
+            db_tweet.user_id = status.author.id
+            db_tweet.full_text = status.full_text
+            need_embeds.append(db_tweet)
 
-    db.session.commit()    
+        # add to the database
+        db.session.add(db_tweet)
+    
+    # get Basilica embeddings for tweets that did not already have them
+    all_tweet_texts = [tweet.full_text for tweet in need_embeds]
+    embeddings = list(basilica_api.embed_sentences(all_tweet_texts, model="twitter"))
+    for i in range(len(need_embeds)):
+        need_embeds[i].embedding = embeddings[i]
+
+    db.session.commit()
     print(f"Added user {db_user.name} with {len(statuses)} tweets")
 
     return db_user, statuses
