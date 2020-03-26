@@ -27,6 +27,7 @@
                 <td>@{{user.screen_name}}</td>
                 <td>{{user.tweet_count}}</td>
                 <td>{{user.followers_count}}</td>
+                <td><a href="/admin/db/remove/{{user.screen_name}}">remove</a></td>
             </tr>
         {% endfor %}
         </table>

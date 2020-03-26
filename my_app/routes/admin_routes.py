@@ -3,7 +3,7 @@
 from flask import Blueprint, request, render_template, flash, redirect
 from flask_basicauth import BasicAuth
 
-from my_app.models import db, User
+from my_app.models import db, User, Tweet
 from my_app.routes.twitter_routes import store_twitter_data
 
 admin_routes = Blueprint("admin_routes", __name__)
@@ -31,4 +31,22 @@ def seed_db():
         store_twitter_data(user)
 
     flash("Default users added to database", "success")
+    return redirect("/admin")
+
+@admin_routes.route("/admin/db/remove/<screen_name>")
+@basic_auth.required
+def remove_user(screen_name=None):
+    # see if the user exists
+    try:
+        user = User.query.filter_by(screen_name=screen_name).one()
+    except:
+        flash(f"User {screen_name} not found, cannot remove", "error")
+        return redirect("/admin")
+
+    # remove the user from the database
+    Tweet.query.filter_by(user_id=user.id).delete()
+    User.query.filter_by(screen_name=screen_name).delete()
+    db.session.commit()
+
+    flash(f"User {screen_name} removed from the database", "success")
     return redirect("/admin")
