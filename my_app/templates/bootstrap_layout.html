@@ -29,8 +29,6 @@
     <!-- see: https://getbootstrap.com/docs/4.0/components/navbar/ -->
     {% set nav_links = [
       ('/newUser', 'add_user_form', 'Add a User'),
-      ('/books', 'books', 'Books'),
-      ('/books/new', 'new_book', 'New Book')
     ] -%}
     {% set active_page = active_page|default('index') -%}
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -68,8 +66,12 @@
       <div id="footer">
         <br>
         <hr>
-        <p>Built by Jonathan Duke</p>
-        <a href="https://github.com/jonDuke/my-web-app">Source</a>
+        <p>Built by Jonathan Duke 
+          <a href="https://github.com/jonDuke/my-web-app">Source</a>
+        </p>
+        <p>Taught by Prof. MJ Rossetti
+          <a href="https://github.com/prof-rossetti/">Github</a>
+        </p>
       </div>
     </div>
 

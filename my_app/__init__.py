@@ -6,7 +6,6 @@ from flask import Flask
 
 from my_app.models import db, migrate
 from my_app.routes.home_routes import home_routes
-from my_app.routes.book_routes import book_routes
 from my_app.routes.twitter_routes import twitter_routes
 from my_app.routes.admin_routes import admin_routes
 from my_app.routes.stats_routes import stats_routes
@@ -29,7 +28,6 @@ def create_app():
     migrate.init_app(app, db)
 
     app.register_blueprint(home_routes)
-    app.register_blueprint(book_routes)
     app.register_blueprint(twitter_routes)
     app.register_blueprint(admin_routes)
     app.register_blueprint(stats_routes)

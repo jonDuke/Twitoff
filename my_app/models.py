@@ -29,11 +29,6 @@ class User(db.Model):
     tweet_count = db.Column(db.Integer)
     tweets = db.relationship('Tweet', backref='users')
 
-class Book(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(128))
-    author_id = db.Column(db.String(128))
-
 def parse_records(database_records):
     """
     A helper method for converting a list of database record objects into a list of dictionaries, so they can be returned as JSON
