@@ -4,29 +4,41 @@
 {% set active_page = "admin_panel" %}
 
 {% block content %}
+    <!-- table styling isn't covered in the bootstrap css -->
+    <style>
+    table, th, td { border: 1px solid black; }
+    </style>
+
     <h2>Admin Panel</h2>
     <hr>
     <!-- List all current users -->
     <p>Users in the database:</p>
     {% if users %}
-        <table>
+        <table style="border: 1px solid black">
             <tr>
                 <th>User</th>
                 <th>Screen Name</th>
-                <th>Followers</th>
                 <th>Tweets in DB</th>
+                <th>Followers</th>
             </tr>
         {% for user in users %}
             <tr>
                 <td>{{user.name}}</td>
                 <td>@{{user.screen_name}}</td>
-                <td>{{user.followers_count}}</td>
                 <td>{{user.tweet_count}}</td>
+                <td>{{user.followers_count}}</td>
             </tr>
         {% endfor %}
         </table>
     {% else %}
         <p>No users found.</p>
     {% endif %}
+
+    <br>
+
+    <button onclick="window.location.href = '/admin/db/reset';" style="width:125px">
+        Clear Database</button>
+    <button onclick="window.location.href = '/admin/db/seed';" style="width:125px">
+        Add Defaults</button>
 
 {% endblock %}

@@ -14,6 +14,7 @@ requests = "*"
 basilica = "*"
 tweepy = "*"
 scikit-learn = "*"
+flask-basicauth = "*"
 
 [requires]
 python_version = "3.7"

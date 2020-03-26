@@ -1,5 +1,7 @@
 # my_app/__init__.py
 
+import os
+from dotenv import load_dotenv
 from flask import Flask
 
 from my_app.models import db, migrate
@@ -17,6 +19,12 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///my_app_12.db"
     #app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////Users/thedo/lambda_u3/sprint-3/my-web-app/my_app_12.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    # set up authentication variables for admin controls
+    load_dotenv()
+    app.config['BASIC_AUTH_USERNAME'] = os.getenv("ADMIN_NAME")
+    app.config['BASIC_AUTH_PASSWORD'] = os.getenv("ADMIN_PASS")
+    app.config['BASIC_AUTH_REALM'] = 'admin'
 
     db.init_app(app)
     migrate.init_app(app, db)
