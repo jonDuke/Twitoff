@@ -24,9 +24,10 @@
         {% for user in users %}
             <tr>
                 <td>{{user.name}}</td>
-                <td>@{{user.screen_name}}</td>
+                <td><a href="https://twitter.com/{{user.screen_name}}">@{{user.screen_name}}</a></td>
                 <td>{{user.tweet_count}}</td>
                 <td>{{user.followers_count}}</td>
+                <td><a href="/admin/db/update/{{user.screen_name}}">update</a></td>
                 <td><a href="/admin/db/remove/{{user.screen_name}}">remove</a></td>
             </tr>
         {% endfor %}
@@ -41,5 +42,7 @@
         Clear Database</button>
     <button onclick="window.location.href = '/admin/db/seed';" style="width:125px">
         Add Defaults</button>
+    <button onclick="window.location.href = '/admin/db/update/all';" style="width:125px">
+        Update All</button>
 
 {% endblock %}
