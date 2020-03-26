@@ -1,0 +1,43 @@
+<!-- web_app/templates/about.html -->
+
+{% extends "bootstrap_layout.html" %}
+{% set active_page = "about" %}
+
+{% block content %}
+    <h2>About Twitoff</h2>
+
+    <p>
+        Twitoff is a simple web app made as part of a class assignment.  
+        It was built in the Data Science course at <a href="https://lambdaschool.com/">Lambda School</a> in March 2020, taught by professor <a href="https://github.com/prof-rossetti/">Mike Rossetti</a>.
+    </p>
+    <p>
+        Its primary function is to provide an interface to a machine learning model.  
+        The model takes two Twitter users and a made up tweet, and attempts to predict which of the users is more likely to post it.
+    </p>
+    <p>
+        The app currently uses a simple Decision Tree model, and learns from about 100-150 actual tweets from each user before it makes a prediction.
+    </p>
+    <br>
+    <p>Technologies Used:
+        <ul>
+            <li>Flask - a Python framework used to build the website itself</li>
+            <li>SQL - production uses a PostGreSQL database to store persistent data</li>
+            <li>Twitter API - the app pulls a collection of tweets for each user and stores them for later use</li>
+            <li>Basilica API - a machine learning API that converts the tweet text into embeddings that are useable by most machine learning models</li>
+            <li>ScikitLearn - the actual prediction uses classification models from ScikitLearn</li>
+            <li>Bootstrap 4 - for the CSS look and feel of the site, mostly configured by Prof. Rossetti</li>
+            <li>Heroku - the app itself is hosted on Heroku</li>
+            <li>GitHub - for source control</li>
+        </ul>
+    </p>
+    <br>
+    <h3>About Me</h3>
+    <p>
+        I am Jonathan Duke, currently a data science student at Lambda School.
+        You can learn more about me through 
+        <a href="https://www.linkedin.com/in/jonduke90/">LinkdIn</a>,
+        <a href=https://github.com/jonDuke">GitHub</a>,
+        or <a href="https://jonduke.github.io/">my own portfolio site</a>.  Thanks for visiting!
+    </p>
+
+{% endblock %}

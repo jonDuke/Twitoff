@@ -18,4 +18,4 @@ def hello():
 
 @home_routes.route("/about")
 def about():
-    return "About me"
+    return render_template("about.html")
