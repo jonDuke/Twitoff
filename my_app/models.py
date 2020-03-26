@@ -10,8 +10,8 @@ migrate = Migrate()
 
 class Tweet(db.Model):
     __tablename__ = 'tweets'
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    id = db.Column(db.BigInteger, primary_key=True)
+    user_id = db.Column(db.BigInteger, db.ForeignKey('users.id'))
     full_text = db.Column(db.String(500))
     embedding = db.Column(db.PickleType)
     # comments = db.Column(db.Integer)
@@ -21,7 +21,7 @@ class Tweet(db.Model):
 
 class User(db.Model):
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.BigInteger, primary_key=True)
     screen_name = db.Column(db.String(128))
     name = db.Column(db.String(128))
     location = db.Column(db.String)
