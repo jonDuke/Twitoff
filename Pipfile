@@ -6,7 +6,7 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-flash = "*"
+flask = "*"
 flask-sqlalchemy = "*"
 flask-migrate = "*"
 python-dotenv = "*"
