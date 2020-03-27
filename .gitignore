@@ -1,4 +1,7 @@
-# .env
+# migrations folder from alembic
+migrations/
+
+# environment variables
 *.env
 
 # VScode settings
