@@ -5,7 +5,9 @@ from flask import Blueprint, request, jsonify, render_template
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 
-from my_app.models import User, Tweet
+from datetime import datetime
+
+from my_app.models import db, User, Tweet, Search
 from my_app.services.basilica_service import basilica_api_client
 
 stats_routes = Blueprint("stats_routes", __name__)
@@ -49,6 +51,16 @@ def predict():
     basilica_api = basilica_api_client()
     example_embedding = basilica_api.embed_sentence(tweet_text)
     result = classifier.predict([example_embedding])
+
+    # save search to db
+    new_search = Search()
+    new_search.user_a = screen_name_a
+    new_search.user_b = screen_name_b
+    new_search.tweet = tweet_text
+    new_search.prediction = result[0]
+    new_search.timestamp = datetime.now()
+    db.session.add(new_search)
+    db.session.commit()
     
     return render_template("twitoff_results.html",
         screen_name_a=screen_name_a,

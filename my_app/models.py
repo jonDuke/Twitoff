@@ -29,6 +29,15 @@ class User(db.Model):
     tweet_count = db.Column(db.Integer)
     tweets = db.relationship('Tweet', backref='users')
 
+class Search(db.Model):
+    __tablename__ = 'searches'
+    id = db.Column(db.Integer, primary_key=True)
+    user_a = db.Column(db.String(128))
+    user_b = db.Column(db.String(128))
+    tweet = db.Column(db.String(500))
+    prediction = db.Column(db.String(128))
+    timestamp = db.Column(db.DateTime)
+
 def parse_records(database_records):
     """
     A helper method for converting a list of database record objects into a list of dictionaries, so they can be returned as JSON
