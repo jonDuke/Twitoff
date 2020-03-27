@@ -11,7 +11,7 @@ from my_app.routes.admin_routes import admin_routes
 from my_app.routes.stats_routes import stats_routes
 
 load_dotenv()
-DATABASE_URL = os.getenv("DATABASE_URL", default="sqlite:///my_app_12.db")
+DATABASE_URL = os.getenv("DATABASE_URL", default="sqlite:///twitoff_db.db")
 def create_app():
     app = Flask(__name__)
 
