@@ -8,6 +8,8 @@ The app currently uses a simple Decision Tree model, and learns from about 100-1
 
 Visit the live app here! https://twitoff-jonduke.herokuapp.com
 
+Note: the Twitter API access is currently broken, so the app is unable to add new Twitter users at this time.
+
 ### Technologies Used:
 
 - Flask - a Python framework used to build the website itself
